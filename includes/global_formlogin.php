@@ -34,7 +34,7 @@
                     },
                     success: function(data) { 
                         if (data == 1){
-                            location.href='../gui/global_inicio.php';
+                            location.href='../gui/global_tramiteall.php';
                         }else{
                             alert ("Error: "+data);
                             $("#password").val("");
