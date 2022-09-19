@@ -1,0 +1,26 @@
+
+        SELECT
+        vu.*,
+        tt.*,
+        l.*,
+        g.*,
+        rp.rfc_rfc rfcp, pp.persona_curp curpp, pp.persona_razonsocial nombrep, pp.persona_direccion direccionp, pp.persona_entrecalle entrecallep, pp.persona_yentrecalle yentrecallep, pp.persona_telefono telefonop, pp.persona_celular celularp, pp.persona_correo correop,
+        cp.colonia_nombre coloniap,
+        rc.rfc_rfc rfcc, pc.persona_curp curpc, pc.persona_razonsocial nombrec, pc.persona_direccion direccionc, pc.persona_entrecalle entrecallec, pc.persona_yentrecalle yentrecallec, pc.persona_telefono telefonoc, pc.persona_celular celularc, pc.persona_correo correoc,
+        cc.colonia_nombre coloniac 
+                ,tt.tramitealtalicencia_folio folio 
+                ,tt.tramitealtalicencia_nombregenerico nombregenerico
+                ,tt.tramitealtalicencia_latitud latitud
+                ,tt.tramitealtalicencia_longitud longitud
+                ,tt.tramitealtalicencia_domicilio domicilio
+                ,ubilic.colonia_nombre nombrecolonia FROM global_tramitevu vu left join global_tramitealtalicencia tt on tramitealtalicencia_tramitevuid = tramitevu_id
+                left join (select gtl.*, gtl.tramitealtalicencia_giro licencias_giro, gtl.tramitealtalicencia_propietariopersonaid licencias_propietariopersonaid, gtl.tramitealtalicencia_comodatariopersonaid licencias_comodatariopersonaid from global_tramitealtalicencia gtl) l on l.tramitealtalicencia_id = tt.tramitealtalicencia_id
+                left join cat_colonia ubilic on ubilic.colonia_id = l.tramitealtalicencia_coloniaid
+        left join cat_giro g on g.giro_id = l.licencias_giro
+        left join cat_persona pp on pp.persona_id = l.licencias_propietariopersonaid
+        left join cat_rfc rp on rp.rfc_id = pp.persona_rfcid
+        left join cat_colonia cp on cp.colonia_id = pp.persona_colonia
+        left join cat_persona pc on pc.persona_id = l.licencias_comodatariopersonaid
+        left join cat_rfc rc on rc.rfc_id = pc.persona_rfcid
+        left join cat_colonia cc on cc.colonia_id = pc.persona_colonia
+         where tramitevu_id = 273

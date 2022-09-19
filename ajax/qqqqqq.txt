@@ -1,0 +1,2 @@
+UPDATE global_tramitevu SET tramitevu_fechapago = '2021-05-04', tramitevu_montopago = 2000, tramitevu_fechatotalpago = '2021-06-09', tramitevu_montototalpago = 133042 
+		WHERE tramitevu_id = 296

@@ -1,0 +1,16 @@
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#googleMap {
+    height:520px;
+    width:100%;
+}
+
+#floating-panel {
+    display: block;  
+    position: fixed;
+    right: 20%; 
+    z-index: 5; 
+    background-color: rgba(f,f,f,0.5);
+    text-align: center; 
+    font-family: 'Montserrat', sans-serif; 'Roboto','sans-serif';
+}
