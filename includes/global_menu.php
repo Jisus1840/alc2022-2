@@ -19,7 +19,7 @@
     <nav id="colorlib-main-menu" role="navigation">
         <ul>
             <!-- <li class="colorlib-active"> -->
-            <li><a href="../gui/global_inicio.php">Inicio</a></li>
+            <!-- <li><a href="../gui/global_inicio.php">Inicio</a></li> -->
             <li><a href="../gui/global_tramiteall.php">Trámites</a></li>
             <li><a href="../gui/global_licenciasall.php">Licencias</a></li>
             <li><a href="../gui/global_licenciasprovisionalesall.php">Permisos Especiales</a></li>

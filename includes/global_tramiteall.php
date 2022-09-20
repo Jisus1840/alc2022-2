@@ -617,7 +617,7 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                     <div class="form-group col-md-2">
                         <input type="text" id="bsqvuid" name="bsqvuid" class="form-control" placeholder="Código barras">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3" style="display:none;">
                         <input type="text" id="bsqfolio" name="bsqfolio" class="form-control" placeholder="Folio">
                     </div>
                     <div class="form-group col-md-4">
@@ -657,7 +657,7 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                             <option value="2">No completado</option>
                         </select>
                     </div>
-					<div class="form-group col-md-3">
+					<div class="form-group col-md-3" style="display:none;">
                         <select id="bsflujo" name="bsflujo" class="form-control">
                             <option value="">Filtro</option>
                             <option value="1">Trámite Nuevo</option>
@@ -691,8 +691,7 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                         $links      	= ( isset( $_GET['links'] ) ) ? $_GET['links'] : 2;
                         $morelinks      = ( isset( $_GET['busqueda'] ) ) ? "&busqueda=".$_GET['busqueda'] : "";
                         $getquery = new ventanilla();
-                        $query = $getquery->getqueryall($busqueda);
-                        //echo $query;
+                        $query = $getquery->getqueryallV2($busqueda);
                         $Paginator  	= new Paginator($conn, $query);
                         $results    	= $Paginator->getData($limit, $page);
                         ?>
@@ -713,12 +712,7 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                             <?
                             if($results <> ''){
                                 if(count($results->data) > 0){
-                                    // echo '<!-- '.json_encode($results->data[0]).' -->';
-                                    // $letras = 0;
-                                    foreach ($results->data as $row){ 
-                                        if($row['licencia_nombre_negocio'] == 'SIX'){
-                                            $letras ++;
-                                        }
+                                    foreach ($results->data as $row){
                                         //Si esta completo y esta en status no aplicado se pinta de color amarillo
                                         if ($row['completo'] == 1 and $row['tramitevu_aplicado'] == 0){
                                             $bgcolor = 'style="background-color:#FFFEEA"';
@@ -761,12 +755,8 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                                             <td>
                                                 <!--<i id="verinfo|<?//=$row['tramitevu_id']?>//|<?//=$row['tabla']?>|<?//=$row['tablacampo']?>" style="cursor:pointer; font-size: 1.5em;" title="Ver Info" class="icon-eye"></i>-->
 												<i id="asigna_folio|<?=$row['tramitevu_id']?>|<?=$row['tabla']?>" style="cursor:pointer; font-size: 1.5em;" title="Asignar folio" class="icon-pencil"></i>
-												<i id="info_pagos|<?=$row['tramitevu_id']?>|<?=$row['tabla']?>" style="cursor:pointer; font-size: 1.5em;" title="Pagos" class="icon-puzzle"data-toggle="modal" data-target="#exampleModal"></i>	
-												<? if($row['comentarios_nuevos_ciudadano']) { ?>
-													<i id="comentario|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Comentarios" class="icon-messages"></i>
-												<? } else { ?>
-													<i id="comentario|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Comentarios" class="icon-message"></i>
-												<? } ?>
+												<i id="info_pagos|<?=$row['tramitevu_id']?>|<?=$row['tabla']?>" style="cursor:pointer; font-size: 1.5em;" title="Pagos" class="icon-puzzle"data-toggle="modal" data-target="#exampleModal"></i>
+												<i id="comentario|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Comentarios" class="icon-message"></i>
                                                 <i id="historial|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Historial" class="icon-time"></i>
                                                 <i id="upload|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Agregar Documentos" class="icon-upload"></i>
                                                 <i id="verflujo|<?=$row['tramitevu_id']?>" style="cursor:pointer; font-size: 1.5em;" title="Ver Flujo" class="icon-arrow-right"></i>
@@ -786,16 +776,6 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                                                             case 1:
                                                                 echo '<i id="crearlicencia|'.$row['tramitevu_id'].'|'.$row['folio'].'" style="cursor:pointer; font-size: 1.5em;" title="Crear Licencia" class="icon-location-arrow" data-toggle="modal" data-target="#exampleModal"></i>';
                                                                 break;
-                                                            case 2:
-                                                                break;
-                                                            case 3:
-                                                                break;
-                                                            case 4:
-                                                                break;
-                                                            case 5:
-                                                                break;
-                                                            case 6:
-                                                                break;
                                                             case 7:
                                                                 echo '<i id="crearpermiso|'.$row['tramitevu_id'].'|'.$row['folio'].'" style="cursor:pointer; font-size: 1.5em;" title="Crear Permiso" class="icon-location-arrow" data-toggle="modal" data-target="#exampleModal"></i>';
                                                                 break;
@@ -805,6 +785,7 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                                                                 echo '<i id="updatelicencia|'.$row['tramitevu_id'].'|'.$row['folio'].'" style="cursor:pointer; font-size: 1.5em;" title="Aplicar cambios" class="icon-location-arrow" data-toggle="modal" data-target="#exampleModal"></i>';
                                                                 break;
                                                             default:
+                                                                break;
                                                         }
                                                     ?>
                                                 <?}?>
@@ -849,9 +830,9 @@ $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
                             ?>
                             </tbody>
                         </table>
-                <br>
-		        <? echo $Paginator->createLinks($links, 'pagination',$morelinks ); ?>
-            </div>
+                        <br>
+        		        <? echo $Paginator->createLinks($links, 'pagination',$morelinks ); ?>
+                    </div>
                 </div>
             </div>
         </div>

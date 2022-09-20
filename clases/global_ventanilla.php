@@ -378,6 +378,132 @@ class ventanilla{
         // var_dump($sql);die;
         return $sql;
     }
+
+    function getqueryallV2($busqueda){
+        $sql = 'SELECT *, CASE WHEN docstotal = docsubidos THEN 1 ELSE 0 END completo 
+        FROM (
+            SELECT tramitevu_aplicado, 
+            tramitevu_cita, 
+            tramitevu_fecha_enviado_revision, 
+            tramitevu_folio, 
+            tramitevu_statusid, 
+            tramitevu_tipotramiteid, 
+            tramitevu_licenciaid, 
+            tramitevu_id, 
+            tramitevu_mostrar, 
+            tramitevu_casillaid, 
+            tipotramite_nombre, 
+            flujodetalle_casillanombre, 
+            status_nombre, 
+            status_color, 
+            folio, 
+            tabla, 
+            (
+                SELECT UPPER(tramitealtalicencia_nombregenerico) 
+                FROM global_tramitealtalicencia 
+                WHERE tramitealtalicencia_tramitevuid = tuv.tramitevu_id
+            ) altalicencia_nombre_negocio, 
+            (
+                SELECT UPPER(tramitealtalicenciaprovisional_tipoevento) 
+                FROM global_tramitealtalicenciaprovisional 
+                WHERE tramitealtalicenciaprovisional_tramitevuid = tuv.tramitevu_id
+            ) permiso_nombre_negocio, 
+            (
+                SELECT UPPER(licencias_nombregenerico) 
+                FROM global_tramitecambio 
+                LEFT JOIN global_licencias ON licencias_id = tramitecambio_licenciaid 
+                WHERE tramitecambio_tramitevuid = tuv.tramitevu_id
+            ) licencia_nombre_negocio, 
+            (
+                SELECT UPPER(tramitecambio_nombrenuevo) 
+                FROM global_tramitecambio 
+                WHERE tramitecambio_tramitevuid = tuv.tramitevu_id
+            ) cambio_nombre_negocio, 
+            LENGTH(
+                (
+                    SELECT GROUP_CONCAT(DISTINCT tiposubtramite_tipodocumentosuploadrequeridos SEPARATOR ",") 
+                    FROM conf_tiposubtramite 
+                    WHERE FIND_IN_SET(tiposubtramite_id, tiposubtramiteid) 
+                    GROUP BY tiposubtramite_tipodocumentosuploadrequeridos
+                )
+            ) - LENGTH(
+                REPLACE(
+                    (
+                        SELECT GROUP_CONCAT(DISTINCT tiposubtramite_tipodocumentosuploadrequeridos SEPARATOR ",") 
+                        FROM conf_tiposubtramite 
+                        WHERE FIND_IN_SET(tiposubtramite_id, tiposubtramiteid) 
+                        GROUP BY tiposubtramite_tipodocumentosuploadrequeridos
+                    ), ",", ""
+                )
+            ) + 1 docstotal, 
+            (
+                SELECT COUNT(DISTINCT documentosupload_tipodocumentosuploadid) 
+                FROM global_documentosupload 
+                WHERE FIND_IN_SET(
+                    documentosupload_tipodocumentosuploadid, 
+                    (
+                        SELECT GROUP_CONCAT(DISTINCT tiposubtramite_tipodocumentosuploadrequeridos SEPARATOR ",") 
+                        FROM conf_tiposubtramite 
+                        WHERE FIND_IN_SET(tiposubtramite_id, tiposubtramiteid) 
+                        GROUP BY tiposubtramite_tipodocumentosuploadrequeridos
+                    )
+                )
+                AND documentosupload_tramitevuid = tuv.tramitevu_id 
+                AND documentosupload_activo = 1
+            ) docsubidos
+            FROM global_tramitevu tuv 
+            LEFT JOIN conf_tipotramite ON tipotramite_id = tramitevu_tipotramiteid 
+            LEFT JOIN conf_flujo ON flujo_id = tipotramite_flujo 
+            LEFT JOIN conf_flujodetalle ON flujodetalle_casillaid = tramitevu_casillaid 
+            LEFT JOIN conf_status ON status_id = tramitevu_statusid 
+            AND flujo_id = flujodetalle_flujoid 
+            LEFT JOIN vw_tramitestramitevu ON tramitevu_id = vuid
+        ) todo
+        WHERE ';
+
+        $where = ['tramitevu_mostrar = 1'];
+
+        if ($busqueda) {
+            $bsq = json_decode(base64_decode($busqueda), true);
+            if ($bsq['bsqvuid'] != '' && $bsq['bsqvuid'] != 'null'){
+                $where[] = '(tramitevu_folio like "%'.$bsq['bsqvuid'].'%")';
+            }
+            if ($bsq['bsqfolio'] != '' && $bsq['bsqfolio'] != 'null'){
+                $where[] = '(folio like "%'.$bsq['bsqfolio'].'%")';
+            }
+            if ($bsq['bsqname'] != '' && $bsq['bsqname'] != 'null'){
+                $where[] = '(
+                    altalicencia_nombre_negocio like "%'.$bsq['bsqname'].'%" 
+                    OR permiso_nombre_negocio like "%'.$bsq['bsqname'].'%" 
+                    OR licencia_nombre_negocio like "%'.$bsq['bsqname'].'%" 
+                    OR cambio_nombre_negocio like "%'.$bsq['bsqname'].'%"
+                )';
+            }
+            if ($bsq['bsqtipotramite'] != '' && $bsq['bsqtipotramite'] != 'null'){
+                $where[] = '(tramitevu_tipotramiteid = '.$bsq['bsqtipotramite'].')';
+            }
+            if ($bsq['bsqstatus'] != '' && $bsq['bsqstatus'] != 'null'){
+                $where[] = '(tramitevu_statusid = '.$bsq['bsqstatus'].')';
+            }
+            if ($bsq['bsqcita'] != '' && $bsq['bsqcita'] != 'null'){
+                $where[] = '(tramitevu_cita IS'.($bsq['bsqcita'] == 1 ? ' NOT' : '').' NULL)';
+            }
+            if ($bsq['bsqrequerimientos'] != '' && $bsq['bsqrequerimientos'] != 'null'){
+                $where[] = 'docsubidos '.($bsq['bsqrequerimientos'] == 1 ? '>=' : '<').' docstotal ';
+            }
+            if($bsq['bsflujo'] != '' && $bsq['bsflujo'] != 'null') {
+                $where[] = 'tramitevu_casillaid = '.$bsq['bsflujo'];
+            }
+        } else {
+            $where[] = 'tramitevu_statusid = 1';
+        }
+
+        $sql .= implode(' 
+        AND ', $where).' 
+        ORDER BY folio DESC';
+
+        return $sql;
+    }
     
     function getqueryallpagos($busqueda){
         $sql = "

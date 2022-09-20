@@ -121,9 +121,9 @@
 						<input type="checkbox" id="ckb_1003" value="1003"> &nbsp;<b>Trámites</b><br>
                         &emsp;&emsp;<input type="checkbox" id="ckb_2007" value="2007"> &nbsp;Ver Trámites<br>
                         &emsp;&emsp;<input type="checkbox" id="ckb_2006" value="2006"> &nbsp;Catálogo de Trámites<br>
-                        &emsp;&emsp;<input type="checkbox" id="ckb_2008" value="2008"> &nbsp;Escanear Trámites<br>
+                        <!--&emsp;&emsp;<input type="checkbox" id="ckb_2008" value="2008"> &nbsp;Escanear Trámites<br>
                         &emsp;&emsp;<input type="checkbox" id="ckb_2009" value="2009"> &nbsp;Ver recibos de escaneo<br>
-                        &emsp;&emsp;<input type="checkbox" id="ckb_2099" value="2099"> &nbsp;Ver Pagos <br>
+                        &emsp;&emsp;<input type="checkbox" id="ckb_2099" value="2099"> &nbsp;Ver Pagos <br> -->
                         <br>
                         
                         <!-- Licencias -->
