@@ -20,7 +20,7 @@ if ($direccionp) {
 	$direccionp .= ' <b>Núm. ext: </b>'.$datos[0]['numext_p'].' <b>Col: </b>'.mb_strtoupper($datos[0]['coloniap']).' <b>C.P. </b>'.$datos[0]['codpp'];
 }
 
-$direccion_negocio = $datos[0]['licencias_domicilio'].' <b>Núm. ext: </b>'.$datos[0]['licencias_domicilio_numext'].', <b>Col.</b> '.mb_strtoupper($datos['colonia_nombre_negocio']);
+$direccion_negocio = $datos[0]['licencias_domicilio'].' <b>Núm. ext: </b>'.$datos[0]['licencias_domicilio_numext'].', <b>Col.</b> '.mb_strtoupper($datos[0]['colonia_nombre_negocio']);
 
 switch (base64_decode($_GET['tipotramitevu'])){
 	//Cualquier cambio 
