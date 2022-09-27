@@ -1357,25 +1357,25 @@ $subtramites = implode(',', $cambios);
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="cnuevo">Comodatario Nuevo</label>
-                                <input id="cnuevo" name="cnuevo" type="text" class="form-control" maxlength="13" placeholder="RFC *" autocomplete="off" disabled>
+                                <input id="cnuevo" name="cnuevo" type="text" class="form-control" maxlength="13" placeholder="RFC *" autocomplete="off" required>
                                 <input id="cnuevoid" name="cnuevoid" type="hidden">
                             </div>
                             <div class="form-group col-md-12">
-                                <input id="personanombrec" name="personanombrec" type="text" class="form-control" placeholder="Nombre" readonly maxlength="250">
+                                <input id="personanombrec" name="personanombrec" type="text" class="form-control" placeholder="Nombre" maxlength="250">
                             </div>
                             <div class="form-group col-md-12">
-                                <input id="direccionc" name="direccionc" type="text" class="form-control" placeholder="Domicilio" readonly maxlength="250">
+                                <input id="direccionc" name="direccionc" type="text" class="form-control" placeholder="Domicilio" maxlength="250">
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="canterior">Comodatario Anterior</label>
-                                <input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" autocomplete="off" required>
+                                <input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" autocomplete="off" required readonly>
                                 <input id="canteriorid" name="canteriorid" type="hidden">
                             </div>
 							<div class="form-group col-md-12">
-                                <input id="personanombrecanterior" name="personanombrecanterior" type="text" class="form-control" placeholder="Nombre" maxlength="250">
+                                <input id="personanombrecanterior" name="personanombrecanterior" type="text" class="form-control" placeholder="Nombre" maxlength="250" readonly>
                             </div>
                             <div class="form-group col-md-12">
-                                <input id="direccioncanterior" name="direccioncanterior" type="text" class="form-control" placeholder="Domicilio" maxlength="250">
+                                <input id="direccioncanterior" name="direccioncanterior" type="text" class="form-control" placeholder="Domicilio" maxlength="250" readonly>
                             </div>
                         <?}?>
                         <? if ($row == 4){?>
