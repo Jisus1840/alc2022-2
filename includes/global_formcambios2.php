@@ -983,11 +983,11 @@ $subtramites = implode(',', $cambios);
 								$("#panterior").focus();
 								banderaguarda = 0;
 							}
-							else if ($("#canterior").val() == '') {
-								alert ("Comodatario es un campo obligatorio");
-								$("#canterior").focus();
-								banderaguarda = 0;
-							}
+							// else if ($("#canterior").val() == '') {
+							// 	alert ("Comodatario es un campo obligatorio");
+							// 	$("#canterior").focus();
+							// 	banderaguarda = 0;
+							// }
                         <?}?>
                         <? if ($row == 3){?>
                             //Validar formulario cambio comodatario
@@ -1368,14 +1368,14 @@ $subtramites = implode(',', $cambios);
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="canterior">Comodatario Anterior</label>
-                                <input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" autocomplete="off" required readonly>
+                                <input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" autocomplete="off" required>
                                 <input id="canteriorid" name="canteriorid" type="hidden">
                             </div>
 							<div class="form-group col-md-12">
-                                <input id="personanombrecanterior" name="personanombrecanterior" type="text" class="form-control" placeholder="Nombre" maxlength="250" readonly>
+                                <input id="personanombrecanterior" name="personanombrecanterior" type="text" class="form-control" placeholder="Nombre" maxlength="250">
                             </div>
                             <div class="form-group col-md-12">
-                                <input id="direccioncanterior" name="direccioncanterior" type="text" class="form-control" placeholder="Domicilio" maxlength="250" readonly>
+                                <input id="direccioncanterior" name="direccioncanterior" type="text" class="form-control" placeholder="Domicilio" maxlength="250">
                             </div>
                         <?}?>
                         <? if ($row == 4){?>
@@ -1455,7 +1455,7 @@ $subtramites = implode(',', $cambios);
 		if(!document.getElementById('canterior')) {
 			document.getElementById('ver_datos_comodatario_propietario_anterior').innerHTML += '<div class="form-row" align="right"><div class="form-group col-md-12"><a  class="altarfc" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">Si no encuentras el RFC del propietario (nuevo y/o anterior) ó faltan datos ó están incorrectos, dalo de alta aquí</a></div></div>';
 							
-			document.getElementById('ver_datos_comodatario_propietario_anterior').innerHTML += '<div class="form-group col-md-12"><label for="canterior">Comodatario</label><input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" required><input id="canteriorid" name="canteriorid" type="hidden"></div>';
+			document.getElementById('ver_datos_comodatario_propietario_anterior').innerHTML += '<div class="form-group col-md-12"><label for="canterior">Comodatario</label><input id="canterior" name="canterior" type="text" class="form-control" placeholder="RFC *" data-required><input id="canteriorid" name="canteriorid" type="hidden"></div>';
 		
 			document.getElementById('ver_datos_comodatario_propietario_anterior').innerHTML += '<div class="form-group col-md-12"><input id="personanombrecanterior" name="personanombrecanterior" type="text" class="form-control" placeholder="Nombre" maxlength="250"></div>';
 		

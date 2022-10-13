@@ -116,6 +116,10 @@
     });
 
     $(document).ready(function(){
+        $("form input:not(#lat, #lng)").each(function() {
+            this.readOnly = false;
+            this.disabled = false;
+        });
 		
 		var colonias="";
 		$.getJSON("../ajax/global_getcoloniasbycp.php?codigo_postal=&municipioid=66",function(data){
